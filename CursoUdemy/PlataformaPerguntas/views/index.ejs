@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guia de Perguntas</title>
-</head>
-
+<%- include('partials/header.ejs') %>
 <body>
-    <h1>Guia Perguntas</h1>
+    <%- include('partials/navbar.ejs') %>
 
-    <h3>Lista de Perguntas</h3>
-    <p>Nome: <%= nome %>
-    </p>
-    <p>Lingaugem Favorita: <%= lang %>
-    </p>
-    <p>Empresa: <%= empresa %>
-    </p>
-    <% if(msg){ %>
-        <h3>Isso é uma mensagem de erro</h3>
-        <%  } %>
-
-
-
+    
 </body>
 
-</html>
+<%- include('partials/footer.ejs') %>
