@@ -10,7 +10,7 @@ const ArticleModel = require('./articles/Article');
 const CategoryModel = require('./categories/Category');
 
 //Ejs
-app.set('view-engine', 'ejs');
+app.set('view engine', 'ejs');
 
 //Images and styles
 app.use(express.static('public'))
