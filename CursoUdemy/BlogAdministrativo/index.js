@@ -33,7 +33,8 @@ app.get("/", (req, res) => {
     ArticleModel.findAll({
         order: [
             ['id', 'DESC']
-        ]
+        ],
+        limit: 4
     }).then(articles => {
         Category.findAll().then(categories => {
             res.render("index.ejs", { articles: articles, categories: categories });

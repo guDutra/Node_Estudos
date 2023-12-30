@@ -52,17 +52,68 @@ router.post('/articles/delete', (req, res) => {
     }
 });
 
+router.get('/admin/articles/edit/:id', (req, res) => {
+    var id = req.params.id;
+    Article.findByPk(id).then(article => {
+        if (article != undefined) {
+            Category.findAll().then(categories => {
+                res.render("admin/articles/edit.ejs", { article: article, categories: categories });
+            })
+
+        } else {
+            res.redirect('/admin/articles');
+        }
+    }).catch((error) => {
+        console.log("Erro ao editar artigo - ", error);
+        res.redirect('/admin/articles');
+    });
+});
 
 
 router.post("/articles/update", (req, res) => {
     var id = req.body.id;
+
     var title = req.body.title;
     var body = req.body.body;
-    Article.update({ title: title, slug: slugify(title), body: body }, { where: { id: id } })
-        .then(() => { res.redirect('/admin/articles'); })
+    var categoryId = req.body.categoryId;
+    Article.update({ title: title, slug: slugify(title), body: body, categoryId: categoryId }, { where: { id: id } })
+        .then(() => {
+
+            res.redirect('/admin/articles');
+        })
         .catch((error) => {
-            console.log("Erro ao fazer update do artigo no banco ");
+            console.log("Erro ao fazer update do artigo no banco - ", error);
             res.redirect('/admin/articles');
         });
+});
+
+router.get('/articles/page/:num', (req, res) => {
+    var page = req.params.num;
+    var offset = 0;
+    if (isNaN(page) || page == 1) {
+        offset = 0;
+    } else {
+        offset = (parseInt(page) - 1) * 4;
+    }
+    Article.findAndCountAll({
+        limit: 4,
+        offset: offset
+    }).then(articles => {
+        var next;
+        if (offset + 4 >= articles.count) {
+            next = false;
+        } else {
+            next = true;
+        }
+        var result = {
+            page: parseInt(page),
+            next: next,
+            articles: articles
+        }
+        Category.findAll().then(categories => {
+            res.render('admin/articles/page.ejs', { result: result, categories: categories });
+        })
+    });
+
 })
 module.exports = router;
