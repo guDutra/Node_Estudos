@@ -5,12 +5,13 @@ const connection = require('./database/connection');
 
 const categoriesController = require('./categories/CategoriesController');
 const articlesController = require('./articles/ArticlesController');
-
+const usersController = require('./user/UserController');
 const ArticleModel = require('./articles/Article');
 const CategoryModel = require('./categories/Category');
 const Article = require('./articles/Article');
 const { where } = require('sequelize');
 const Category = require('./categories/Category');
+const User = require('./user/User');
 
 //Ejs
 app.set('view engine', 'ejs');
@@ -71,7 +72,7 @@ app.get('/category/:slug', (req, res) => {
     }).then(category => {
         if (category != undefined) {
             Category.findAll().then(categories => {
-                res.render('index', {articles: category.articles, categories: categories});
+                res.render('index', { articles: category.articles, categories: categories });
             })
         } else {
             res.redirect('/')
@@ -84,6 +85,7 @@ app.get('/category/:slug', (req, res) => {
 });
 app.use('/', categoriesController);//Aqui pode ser colocado prefixo para rota/url
 app.use('/', articlesController);
+app.use('/', usersController);
 
 //Starting the server
 app.listen(8080, () => {
