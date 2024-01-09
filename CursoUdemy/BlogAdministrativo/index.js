@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const connection = require('./database/connection');
-
+const session = require('express-session');
 const categoriesController = require('./categories/CategoriesController');
 const articlesController = require('./articles/ArticlesController');
-const usersController = require('./user/UserController');
+const usersController = require('./user/UserController.js')
 const ArticleModel = require('./articles/Article');
 const CategoryModel = require('./categories/Category');
 const Article = require('./articles/Article');
@@ -15,6 +15,17 @@ const User = require('./user/User');
 
 //Ejs
 app.set('view engine', 'ejs');
+
+
+//Sessions
+app.use(session({
+    secret: 'J#7pL2*eR9k!aY4wQ8zU',
+    resave: false, // set to false to avoid deprecated warning
+    saveUninitialized: false, // set to false to avoid deprecated warning
+    cookie: {
+        maxAge: 30000
+    }
+}))
 
 //Images and styles
 app.use(express.static('public'))
@@ -86,6 +97,8 @@ app.get('/category/:slug', (req, res) => {
 app.use('/', categoriesController);//Aqui pode ser colocado prefixo para rota/url
 app.use('/', articlesController);
 app.use('/', usersController);
+
+
 
 //Starting the server
 app.listen(8080, () => {
