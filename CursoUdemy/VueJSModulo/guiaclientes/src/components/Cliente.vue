@@ -3,15 +3,16 @@
         <!-- 2 condicionais adicionadas aonde o lado esquerda é a classe adicionada e o lado direito a condição  -->
         <h4>Nome: {{ cliente.nome }} </h4>
         <h5 v-if="showAge === true || showAge === undefined">Idade: {{ cliente.idade }}</h5>
-        <h5 v-else> Usuário não infomrou a idade</h5>
+        <h5 v-else> Usuário não informou a idade</h5>
         <hr>
         <p>{{ descricao }}</p>
         <hr>
         <p>Número: {{ cliente.numero }}</p>
-        <p>EMail: {{ cliente.email }}</p>
+        <p>EMail: {{ cliente.email}}</p>
         <p>Descrição: {{ cliente.descricao }}</p>
         <button class="btn btn-primary" @click="mudarCor($event)">Mudar cor</button>
         <button class="btn btn-danger" @click="emitirEventoDelete" type="button">Deletar</button>
+        <h8>Id especial: {{idEspecial }}</h8>
 
 
     </div>
@@ -38,6 +39,11 @@ export default {
         emitirEventoDelete: function() {
             console.log("filho");
             this.$emit("removal",{ idDoCliente: this.cliente.id})
+        }
+    },
+    computed: {
+        idEspecial: function() {
+            return (this.cliente.email + this.cliente.nome + this.cliente.id).toUpperCase();
         }
     }
 }

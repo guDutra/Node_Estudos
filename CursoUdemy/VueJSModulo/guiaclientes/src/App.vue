@@ -17,8 +17,8 @@
 
 
 
-    <div v-for="(cliente, index) in clientes" :key="cliente.id">
-      <h5>{{ index +1 }}</h5>
+    <div v-for="(cliente, index) in orderClientes" :key="cliente.id">
+      <h5>{{ index + 1 }}</h5>
       <ClienteComponent :cliente="cliente" @removal="deletarUsuario($event)" />
       <hr>
       <h3>Edição:</h3>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import ClienteComponent from "./components/Cliente.vue";
 
 export default {
@@ -112,6 +113,11 @@ export default {
       var id = $event.idDoCliente;
       var novoArray = this.clientes.filter(cliente => cliente.id != id);
       this.clientes = novoArray;
+    }
+  },
+  computed: {
+    orderClientes: function () {
+      return _.orderBy(this.clientes,['nome'], ['asc']);
     }
   }
 }
