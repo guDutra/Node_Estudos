@@ -1,14 +1,31 @@
 <template>
   <div id="app">
-    
-    <div v-for="(cliente, index) in clientes" :key="cliente.id" >
-      <h5>{{ index }}</h5>
-      <ClienteComponent :cliente="cliente"/>
+    <!-- Add this line to the head of your HTML file -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <h3>Cadastro</h3>
+    <div id="formulario">
+      <small class="alert alert-danger" v-show="deuErro"> Erro no formulário</small>
+      <input class="form-control" v-model="nomeField" type="text" name="nome" id="nome" placeholder="Nome:"><br>
+      <input class="form-control" v-model="emailField" type="email" name="email" id="email" placeholder="Email:"><br>
+      <input class="form-control" v-model="numeroField" type="text" name="numero" id="numero" placeholder="Numero:"><br>
+      <input class="form-control" v-model="idadeField" type="number" name="idade" id="idade" placeholder="Idade:"><br>
+      <textarea class="form-control" v-model="descricaoField" name="descricao" id="descricao" placeholder="Descrição:"
+        cols="30" rows="10"></textarea><br>
+      <button class="btn btn-success" @click="cadastarUsuario()">Cadastrar</button>
+    </div>
+
+
+
+    <div v-for="(cliente, index) in clientes" :key="cliente.id">
+      <h5>{{ index +1 }}</h5>
+      <ClienteComponent :cliente="cliente" @removal="deletarUsuario($event)" />
       <hr>
       <h3>Edição:</h3>
-      <input type="text"  v-model="cliente.nome">
-      <input type="email"  v-model="cliente.email">
+      <input type="text" v-model="cliente.nome">
+      <input type="email" v-model="cliente.email">
     </div>
+
 
   </div>
 </template>
@@ -20,13 +37,12 @@ export default {
   name: 'App',
   data() {
     return {
-      clienteVictor: {
-        nome: 'Victor',
-        numero: '054-42424-4242',
-        email: 'victor@gmail.com',
-        idade: 23,
-        descricao: 'dcoarmoerffe'
-      },
+      deuErro: false,
+      nomeField: "",
+      idadeField: 19,
+      descricaoField: "",
+      emailField: "",
+      numeroField: "",
       clientes: [{
         id: 2,
         nome: 'Gustavo Dutra',
@@ -75,8 +91,35 @@ export default {
 
 
 
+  },
+  methods: {
+    cadastarUsuario: function () {
+      if (this.nomeField == "" || !isNaN(this.nomeField)) {
+        this.deuErro = true;
+      } else {
+        this.clientes.push({
+          id: Date.now(), nome: this.nomeField, numero: this.numeroField, email: this.emailField,
+          idade: this.idadeField, descricao: this.descricaoField
+        });
+        this.nomeField = "";
+        this.idadeField = "";
+        this.numeroField = "";
+        this.emailField = "";
+        this.descricaoField = "";
+      }
+    },
+    deletarUsuario: function ($event) {
+      var id = $event.idDoCliente;
+      var novoArray = this.clientes.filter(cliente => cliente.id != id);
+      this.clientes = novoArray;
+    }
   }
 }
 </script>
 
-<style></style>
+<style>
+#formulario {
+  width: 600px;
+
+}
+</style>
