@@ -10,6 +10,8 @@
         <p>Número: {{ cliente.numero }}</p>
         <p>EMail: {{ cliente.email }}</p>
         <p>Descrição: {{ cliente.descricao }}</p>
+        <button class="btn btn-primary" @click="mudarCor($event)">Mudar cor</button>
+        <button class="btn btn-danger" @click="emitirEventoDelete" type="button">Deletar</button>
 
 
     </div>
@@ -27,6 +29,16 @@ export default {
     props: {
         cliente: Object,
         showAge: Boolean
+    },
+    methods: {
+        mudarCor : function($event) {
+            console.log($event);
+            this.isPremium = !this.isPremium;
+        },
+        emitirEventoDelete: function() {
+            console.log("filho");
+            this.$emit("removal",{ idDoCliente: this.cliente.id})
+        }
     }
 }
 </script>
@@ -34,7 +46,7 @@ export default {
 <style scoped>
 .cliente {
     max-width: 600px;
-    height: 250px;
+    height: 350px;
     background-color: #ECE5E3;
     padding: 1%;
     margin-top: 2%;
@@ -44,7 +56,7 @@ export default {
     color: goldenrod;
     background-color: black;
     max-width: 600px;
-    height: 250px;
+    height: 350px;
     padding: 1%;
     margin-top: 2%;
 }
